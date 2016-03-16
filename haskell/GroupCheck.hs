@@ -1,42 +1,43 @@
--- STILL WORKING
+-- FINISHED
+
 
 groupCheck :: String -> Bool
-groupCheck [] = True
 groupCheck input =
-  case break isOpening input of
-    (_, []) -> -- no opening delimiters
-      case break isClosing input of
-        (_, []) -> True -- no delimiters
-        _ -> False -- closing but no opening
-    (_, x : xs) -> -- x is an opening delimiter
-      case break (isCloserOf x) xs of
-        (_, []) -> False -- no closer for x
-        (ys, z : zs) -> -- z closes x
-          groupCheck ys && groupCheck zs
+  let subs = iterate removeSubformula input in
+  stableTail subs == ""
 
 
-isOpening :: Char -> Bool
-isOpening c =
-  case c of
-    '(' -> True
-    '[' -> True
-    '{' -> True
-    _ -> False
+removeSubformula :: String -> String
+removeSubformula = helper ""
+  where
+    helper acc str =
+      case str of
+        "" -> acc
+        '(' : ')' : rest -> acc ++ rest
+        '[' : ']' : rest -> acc ++ rest
+        '{' : '}' : rest -> acc ++ rest
+        x : rest -> helper (acc ++ [x]) rest
 
 
-isClosing :: Char -> Bool
-isClosing c =
-  case c of
-    ')' -> True
-    ']' -> True
-    '}' -> True
-    _ -> False
+-- | Unsafe.
+stableTail :: Eq a => [a] -> a
+stableTail (x : y : ys) =
+  if x == y
+  then x
+  else stableTail (y : ys)
 
 
-isCloserOf :: Char -> Char -> Bool
-isCloserOf c =
-  case c of
-    '(' -> (== ')')
-    '[' -> (== ']')
-    '{' -> (== '}')
-    _ -> error $ 'c' : " is not a delimiter!"
+main :: IO ()
+main = print (test groupCheck groupCheckTests)
+
+
+test :: Eq b => (a -> b) -> [(a, b)] -> [Bool]
+test f = map (\(x, y) -> f x == y)
+
+
+groupCheckTests :: [(String, Bool)]
+groupCheckTests =
+  [ ("{()[]}", True)
+  , ("{([)]}", False)
+  , ("[()[]]", True)
+  ]

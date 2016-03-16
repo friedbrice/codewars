@@ -1,3 +1,5 @@
+-- FINISHED
+
 shiftedDiff :: String -> String -> Int
 shiftedDiff a b = n
   where
