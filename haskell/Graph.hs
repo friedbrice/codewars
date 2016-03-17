@@ -1,6 +1,6 @@
 --module Graph where
 
-
+import Control.Monad (guard)
 import Data.Set (elems, fromList, member, Set)
 
 
@@ -9,16 +9,19 @@ type Arc  = (Node, Node)
 
 
 solveGraph :: Node -> Node -> [Arc] -> Bool
-solveGraph s e arcs =
-  case s == e of
-    True -> True
-    False -> (s, e) `member` graph'
+solveGraph s e arcs = s == e || (s, e) `member` graph'
   where
     graph = fromList arcs
     graph' = iterate compose graph !! (length arcs)
     compose g =
-      let g' = elems g in
-      fromList $ [(s, c) | (s, b) <- g', (b, c) <- g']
+      let
+        g' = elems g
+        g''
+           = map (\((a, b), (c, d)) -> (a, d))
+           $ filter (\((a, b), (c, d)) -> b == c)
+           $ zip g' g'
+      in
+      fromList $ g' ++ g''
 
 
 main :: IO ()
@@ -42,16 +45,16 @@ solveGraphTests =
   , ((('a', 'c'), g2), True)
   , ((('2', 'U'), g3), False)
   ]
-  where
-    g1 = [('a', 'b')]
-    g2 =
-      [ ('a', 'b')
-      , ('b', 'c')
-      , ('c', 'a')
-      , ('c', 'd')
-      , ('e', 'a')
-      ]
-    g3 =
-      [ ('2', 'a')
-      , ('b', 'U')
-      ]
+  --where
+g1 = [('a', 'b')]
+g2 =
+  [ ('a', 'b')
+  , ('b', 'c')
+  , ('c', 'a')
+  , ('c', 'd')
+  , ('e', 'a')
+  ]
+g3 =
+  [ ('2', 'a')
+  , ('b', 'U')
+  ]
