@@ -1,4 +1,4 @@
--- STIL WORKING
+-- STILL WORKING
 
 --findNb :: Integer -> Integer
 --findNb m =

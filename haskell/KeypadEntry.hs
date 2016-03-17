@@ -1,3 +1,5 @@
+-- FINISHED
+
 import Data.List (foldl')
 
 
