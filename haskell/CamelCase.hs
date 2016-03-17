@@ -1,12 +1,14 @@
 {-# LANGUAGE BangPatterns #-}
 
+
 import Data.Char (toUpper)
+import Data.List (foldl')
 
 
 toCamelCase2 :: String -> String
 toCamelCase2 input = helper "" input
   where
-    helper !acc !str =
+    helper !acc str =
       case str of
         [] -> reverse acc
         '-' : [] -> reverse acc
