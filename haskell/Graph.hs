@@ -1,7 +1,8 @@
+-- FINISHED
 --module Graph where
 
-import Control.Monad (guard)
-import Data.Set (elems, fromList, member, Set)
+import Control.Applicative ((<$>), (<*>))
+import qualified Data.Set as S
 
 
 type Node = Char
@@ -9,19 +10,19 @@ type Arc  = (Node, Node)
 
 
 solveGraph :: Node -> Node -> [Arc] -> Bool
-solveGraph s e arcs = s == e || (s, e) `member` graph'
+solveGraph s e arcs = s == e || S.member (s, e) graph'
   where
-    graph = fromList arcs
-    graph' = iterate compose graph !! (length arcs)
-    compose g =
-      let
-        g' = elems g
-        g''
-           = map (\((a, b), (c, d)) -> (a, d))
-           $ filter (\((a, b), (c, d)) -> b == c)
-           $ zip g' g'
-      in
-      fromList $ g' ++ g''
+    graph = S.fromList arcs
+    graph' = iterate compose graph !! (length arcs + 1)
+    compose g = S.union g g'
+      where
+        arcs = S.toList g
+        arcs' = filter (\(x, y) -> x == s) arcs
+        g'
+          = S.map (\((a, b), (c, d)) -> (a, d))
+          $ S.filter (\((a, b), (c, d)) -> b == c)
+          $ S.fromList
+          $ (,) <$> arcs' <*> arcs
 
 
 main :: IO ()
