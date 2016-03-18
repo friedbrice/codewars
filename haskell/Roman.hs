@@ -1,4 +1,4 @@
--- import Data.List (foldl')
+-- Finished
 
 
 solution :: String -> Int
