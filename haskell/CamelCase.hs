@@ -1,5 +1,6 @@
 {-# LANGUAGE BangPatterns #-}
 
+-- works, but not performant enough to pass tests :-(
 
 import Data.Char (toUpper)
 import Data.List (foldl')

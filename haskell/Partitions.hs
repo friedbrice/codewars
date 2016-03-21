@@ -1,3 +1,5 @@
+-- still working
+
 -- write a function that takes an Integer and returns the number of
 -- integer partitions (discounting order)
 

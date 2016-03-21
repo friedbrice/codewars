@@ -1,3 +1,5 @@
+-- still working
+
 module Codewars.Kata.Permutations (permutations) where
 
 -- In this kata you have to create all permutations of an input string
