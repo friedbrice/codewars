@@ -4,6 +4,9 @@
 -- going to read up on optimization, then come back.
 
 
+import Prelude hiding (foldr, reverse)
+
+
 fix :: (a -> a) -> a
 fix f = let x = f x in x
 
