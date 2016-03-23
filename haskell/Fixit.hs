@@ -22,4 +22,5 @@ foldr'
   -> (a -> b -> b) -> b -> [a] -> b
 foldr' g f acc list = case list of
   [] -> acc
-  (x : xs) -> g f (f x acc) xs
+  -- (x : xs) -> g f (f x acc) xs -- this is foldl
+  (x : xs) -> f x (g f z xs)
