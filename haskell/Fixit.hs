@@ -1,4 +1,4 @@
--- Still Working
+-- Finished.
 
 -- works, but hits the memory wall when i submit.
 -- going to read up on optimization, then come back.
